@@ -91,6 +91,7 @@ export default class StepZilla extends Component {
   // which step are we in?
   checkNavState(currentStep) {
     this.setState(this.getPrevNextBtnState(currentStep));
+	this.setState({navState: this.getNavStates(currentStep, this.props.steps.length)});
   }
 
   // set the nav state
@@ -268,7 +269,8 @@ export default class StepZilla extends Component {
 
   // get the classmame of steps
   getClassName(className, i){
-    let liClassName = className + "-" + this.state.navState.styles[i];
+	const stepClass = this.state.navState.styles[i] || 'todo';
+    let liClassName = className + "-" + stepClass;
 
     // if step ui based navigation is disabled, then dont highlight step
     if (!this.props.stepsNavigation)

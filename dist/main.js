@@ -343,7 +343,8 @@ var StepZilla = function (_Component) {
   }, {
     key: 'getClassName',
     value: function getClassName(className, i) {
-      var liClassName = className + "-" + this.state.navState.styles[i];
+      var stepClass = this.state.navState.styles[i] || 'todo';
+	  var liClassName = className + "-" + stepClass;
 
       // if step ui based navigation is disabled, then dont highlight step
       if (!this.props.stepsNavigation) liClassName += " no-hl";
