@@ -21,6 +21,10 @@ export default class StepZilla extends Component {
 
     this.applyValidationFlagsToSteps();
   }
+  
+  componentWillReceiveProps(nextProps){
+	this.checkNavState(this.state.compState, nextProps.steps);
+  }
 
   // extend the "steps" array with flags to indicate if they have been validated
   applyValidationFlagsToSteps() {
@@ -59,7 +63,10 @@ export default class StepZilla extends Component {
     return { current: indx, styles }
   }
 
-  getPrevNextBtnState(currentStep) {
+  getPrevNextBtnState(currentStep, steps) {
+	if(!steps){
+		steps = this.props.steps;
+	}
     // first set default values
     let showPreviousBtn = true;
     let showNextBtn = true;
@@ -71,12 +78,12 @@ export default class StepZilla extends Component {
     }
 
     // second to last step change next btn text if supplied as props
-    if (currentStep === this.props.steps.length - 2 ) {
+    if (currentStep === steps.length - 2 ) {
       nextStepText = this.props.nextTextOnFinalActionStep || nextStepText;
     }
 
     // last step hide next btn, hide previous btn if supplied as props
-    if (currentStep >= this.props.steps.length - 1) {
+    if (currentStep >= steps.length - 1) {
       showNextBtn = false;
       showPreviousBtn = this.props.prevBtnOnLastStep === false ? false : true;
     }
@@ -89,9 +96,8 @@ export default class StepZilla extends Component {
   }
 
   // which step are we in?
-  checkNavState(currentStep) {
-    this.setState(this.getPrevNextBtnState(currentStep));
-	this.setState({navState: this.getNavStates(currentStep, this.props.steps.length)});
+  checkNavState(currentStep, steps) {
+    this.setState(this.getPrevNextBtnState(currentStep, steps));
   }
 
   // set the nav state
